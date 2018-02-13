@@ -12,8 +12,28 @@ public class Bank {
 	}
 	
 	public boolean addAccount(int an, int pn, double bal){
+		
+		if(validate(an) == null)
+			accounts[numAccounts] = new Account(an, pn, bal);
+		
+		
 			return true;
 	}
+	
+	/**
+	 * 
+	 * @param an
+	 * @return
+	 */
+	public Account validate(int an){
+		for(Account n: accounts){
+			if(n.accountNumber == an){
+				return n;
+			}
+		}
+		return null;
+	}
+
 	
 	
 }

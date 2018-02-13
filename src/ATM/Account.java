@@ -10,5 +10,8 @@ public class Account {
 		this.balance = balance;
 	}
 	
+	public boolean validate(int pin){
+		return pin==this.pinCode;
+	}
 	
 }
