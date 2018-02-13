@@ -2,7 +2,7 @@ package ATM;
 import java.util.Scanner;
 
 public class ATM {
-	
+	//s
 	boolean receivedAcc = false;
 	boolean receivedPin = false;
 	boolean receivedOp = false;
