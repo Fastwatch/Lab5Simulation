@@ -113,12 +113,12 @@ public class ATM {
 			
 		}else if(receivedOp == true && receivedAcc == true && receivedPin == true){
 			try{
-				double an = Double.parseDouble(input);
+				double amt = Double.parseDouble(input);
 				if(transaction.getOp().equals("W")){
-					transaction.getAcnt().withdrawl(an);
+					transaction.getAcnt().withdrawl(amt);
 				}
 				else{
-					transaction.getAcnt().deposit(an);
+					transaction.getAcnt().deposit(amt);
 				}
 				reset();
 				return true;
