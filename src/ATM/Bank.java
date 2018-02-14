@@ -12,7 +12,7 @@ public class Bank {
 	}
 	
 	/**
-	 * Add a new account to the Bank
+	 *  Add a new account to the Bank
 	 * 
 	 * @param an account number 
 	 * @param pn pin number of the account

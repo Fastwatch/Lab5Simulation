@@ -2,7 +2,7 @@ package ATM;
 
 
 public class ATM {
-	//s
+	
 	private boolean receivedAcc = false;
 	private boolean receivedPin = false;
 	private boolean receivedOp = false;
@@ -28,7 +28,6 @@ public class ATM {
 			return acnt;
 		}
 
-		
 	}
 	
 	public ATM() {

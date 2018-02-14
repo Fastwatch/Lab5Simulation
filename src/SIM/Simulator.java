@@ -17,7 +17,7 @@ public class Simulator {
 			input = in.nextLine();
 			
 			if(atm.execute(input) == false){
-				continue; //if the account number is incorrect, it will continue(restart) do loop
+				continue;  //if the account number is incorrect, it will continue(restart) do loop
 			} 
 			
 			System.out.print("\nplease enter the pin number: ");

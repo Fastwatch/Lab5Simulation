@@ -25,7 +25,7 @@ public class Account {
 	 * do anything, if it is negative it will simply throw an exception
 	 * 
 	 * @param amt amount to be withdraw from account
-	 * @return true if money can be withdrawn
+	 * @return true if money can be withdraw
 	 */
 	public boolean withdrawl(double amt){
 		if(amt < 0) throw new IllegalArgumentException("Cannot withdraw negative money");
