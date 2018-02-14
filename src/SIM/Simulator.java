@@ -15,50 +15,49 @@ public class Simulator {
 		do{
 			System.out.print("\nplease enter an account number or \"exit\" to quit: ");
 			input = in.nextLine();
-			if (input.equals("1234") && !input.equals("exit")) { //atm.execute(input)) {
-				System.out.print("\nplease enter the pin number: ");
-				
-				if(in.nextLine().equals("6789")) {
-					boolean validAction = false;
-					do {
-						System.out.print("\nWithdraw(W) or Deposit(D): ");
-						
-						input = in.nextLine();
-						if(input.equals("W") || input.equals("D") ) {
-							//valid atm prints out string
-							validAction = true;
-							
-							//loop amount
-							boolean validAmount = false;
-							do {
-								System.out.print("\nplease enter the amount: ");
-							
-								if(in.nextLine().equals("20")) {
-									validAmount = true;
-									
-								} else {
-									System.out.println("ya broke");
-								}
-							} while (!validAmount);
-							
-							
-						} else {
-							System.out.print("\nwrong answer");
-						}
+			
+			if(atm.execute(input) == false){
+				continue; //if the account number is incorrect, it will continue(restart) do loop
+			} 
+			
+			System.out.print("\nplease enter the pin number: ");
+			input = in.nextLine();
+			
+			if(atm.execute(input) == false){
+				continue;	//if the pin number is incorrect, it will continue(restart) do loop
+			} 
 					
-					} while(!validAction);
+			boolean validAction = false;
+			//loop through the state of withdrawal/deposit
+				do {
+					System.out.print("\nWithdraw(W) or Deposit(D): ");
+						
+					input = in.nextLine();
+					if(atm.execute(input) == false){
+						continue;
+					}
+					validAction = true;
+					
+				} while(!validAction);
 					
 					//loop action
-				
-				} else {
-					System.out.println("/nIncorrect pin");
-				}
+				//if incorrect amount or transaction completed, it will restart
+				boolean validAmount = false;
+				do {
+						System.out.print("\nplease enter the amount: ");
+						input = in.nextLine();
+						
+						if(atm.execute(input) == false) {
+							break;	//restart to the outer do loop					
+						} 
+						else 
+							validAmount = true;
+						
+				} while (!validAmount);
+				 
 				
 				//atm.execute(in.nextLine);
-			} else if (!input.equals("exit")) {
-				//no account
-				System.out.println("\nThat account doesn't exist");
-			}
+			
 
 		} while( !input.equals("exit") );
 		

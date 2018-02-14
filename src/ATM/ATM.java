@@ -1,104 +1,140 @@
 package ATM;
-import java.util.Scanner;
+
 
 public class ATM {
 	//s
-	boolean receivedAcc = false;
-	boolean receivedPin = false;
-	boolean receivedOp = false;
-	Bank bank;
+	private boolean receivedAcc = false;
+	private boolean receivedPin = false;
+	private boolean receivedOp = false;
+	private Bank bank;
 	Transaction transaction;
 	
 	private class Transaction{
-		private int an;
 		private String op;
-		private double amnt;
 		private Account acnt;
+
+		public Transaction(Account a){
+			acnt = a;
+		}
 		
-		public int getAn() {
-			return an;
-		}
-		public void setAn(int an) {
-			this.an = an;
-		}
 		public String getOp() {
 			return op;
 		}
 		public void setOp(String op) {
 			this.op = op;
 		}
-		public double getAmnt() {
-			return amnt;
-		}
-		public void setAmnt(double amnt) {
-			this.amnt = amnt;
-		}
+
 		public Account getAcnt() {
 			return acnt;
 		}
-		public void setAcnt(Account acnt) {
-			this.acnt = acnt;
-		}
+
 		
 	}
 	
 	public ATM() {
 		// init
 	}
-	
+
+	/**
+	 *  Begins the simulator
+	 */
 	public void start() {
 		bank = new Bank();
 		// run through atm functionality
 	}
 	
-	public void execute(String input){
-		
+	/**
+	 * Resets all information that was collected from the transaction
+	 */
+	private void reset(){
+		receivedAcc = false;
+		receivedPin = false;
+		receivedOp = false;
+		transaction = null;
+	}
+	
+	/**
+	 * This will call the corresponding actions to be executed, with each input being
+	 * determined by the states that it is currently in. These states are:(Actor entering account number, actor entering pin number
+	 * ,or actor entering the operation to be performed on the account)   
+	 * 
+	 * @param input determines what action will be executed, either it is the 
+	 * account number, pin number, or the operation(withdrawal/deposit)
+	 */
+	public boolean execute(String input){
+	
 		if(receivedAcc == false){
 			try{
+				if(input.equals("exit")) return false;
 				int an = Integer.parseInt(input);
-				transaction = new Transaction();
-				transaction.setAcnt(bank.validate(an));
-				if (transaction.getAcnt()==null){
-					System.out.println("Invalid Account Number");
-					transaction = null;
+				if(bank.validate(an) == null){
+					System.out.println("Invalid account number.");
+					reset();
+					return false;
 				}
+				transaction = new Transaction(bank.validate(an));
 				receivedAcc = true;
-				
-				transaction.setAn(an);
+				return true;
 			}
-			catch(Exception e){
-				e.getStackTrace();
-				transaction = null;
+			catch(NumberFormatException e){
+				System.out.println("Invalid account number. \nCannot format the input string '"+ input +"' to a int.");
+				//e.printStackTrace();
+				reset();
+				
+				return false;
 			}			
 		}
 		else if(receivedPin == false){
 			try{
 				int pn = Integer.parseInt(input);
+				
 				if (transaction.getAcnt().validate(pn)==false){
+					reset();
 					System.out.println("Invalid Pin Number");
-					transaction = null;
-					receivedAcc=false;
+					return false;
 				}
 				receivedPin = true;
+				return true;
 			}
 			catch(Exception e){
 				e.getStackTrace();
-				transaction = null;
-				receivedAcc=false;
+				reset();
 			}
 		}else if(receivedOp == false){
 			input = input.toUpperCase();
-			if(input.length()!=1||(input.charAt(0)!='W'||input.charAt(0)!='D')){
+			if(input.length()==1){
+				if((input.equals("W")||input.equals("D"))){
+					transaction.setOp(input);
+					receivedOp = true;
+					return true;
+				}
 				System.out.println("Invalid operation");
-				transaction = null;
-				receivedAcc=false;
-				receivedPin=false;
+				return false;
 			}
-			transaction.setOp(input);
-			receivedOp=true;
-		}else{
+			
+		}else if(receivedOp == true && receivedAcc == true && receivedPin == true){
+			try{
+				double an = Double.parseDouble(input);
+				if(transaction.getOp().equals("W")){
+					transaction.getAcnt().withdrawl(an);
+				}
+				else{
+					transaction.getAcnt().deposit(an);
+				}
+				reset();
+				return true;
+			}
+			catch(NumberFormatException e){
+				//e.printStackTrace();
+				System.out.println("Error formatting double value.");
+				reset();
+				return false;
+			}			
+			
 			
 		}
+		reset();
+		return false;
 		
 	}
 	
