@@ -119,7 +119,7 @@ public class ATM {
 			try{
 				double amt = Double.parseDouble(input);
 				if(transaction.getOp().equals("W")){
-					transaction.getAcnt().withdrawl(amt);
+					transaction.getAcnt().withdraw(amt);
 				}
 				else{
 					transaction.getAcnt().deposit(amt);

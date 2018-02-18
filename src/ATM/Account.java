@@ -27,7 +27,7 @@ public class Account {
 	 * @param amt amount to be withdraw from account
 	 * @return true if money can be withdraw
 	 */
-	public boolean withdrawl(double amt){
+	public boolean withdraw(double amt){
 		if(amt < 0) {
 			System.out.println("Cannot withdraw negative money");
 			return false;
@@ -39,6 +39,7 @@ public class Account {
 		
 		balance = balance - amt;
 		System.out.println("Successful withdrawal of $"+ amt + " from account number: " + accountNumber + ".\nTransaction completed.");
+		System.out.println("Account balance: " + balance + "\n");
 		return true;
 	}
 	
@@ -55,7 +56,8 @@ public class Account {
 		balance = balance + amt;
 		
 		System.out.println("Successful deposit $"+ amt + " to account number: " + accountNumber + ".\nTransaction completed.");
-		
+		System.out.println("Account balance: " + balance + "\n");
+
 	}
 
 	public int getAccountNumber() {
@@ -64,6 +66,10 @@ public class Account {
 
 	public void setAccountNumber(int accountNumber) {
 		this.accountNumber = accountNumber;
+	}
+	
+	public double getBalance() {
+		return this.balance;
 	}
 	
 }
