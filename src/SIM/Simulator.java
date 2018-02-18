@@ -13,7 +13,7 @@ public class Simulator {
 		atm.start();
 		System.out.println("Welcome to the atm simulator..");
 		do{
-			System.out.print("\nplease enter an account number or \"exit\" to quit: ");
+			System.out.print("\nPlease enter an account number or \"exit\" to quit: ");
 			input = in.nextLine();
 			
 			if(atm.execute(input) == false){
@@ -44,11 +44,12 @@ public class Simulator {
 				//if incorrect amount or transaction completed, it will restart
 				boolean validAmount = false;
 				do {
+						
 						System.out.print("\nplease enter the amount: ");
 						input = in.nextLine();
 						
 						if(atm.execute(input) == false) {
-							break;	//restart to the outer do loop					
+							continue;					
 						} 
 						else 
 							validAmount = true;

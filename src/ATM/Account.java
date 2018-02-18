@@ -33,12 +33,12 @@ public class Account {
 			return false;
 		}
 		if(amt > balance){
-			System.out.println("Unable to process withdrawal, your balance is: " + balance);
+			System.out.println("Unable to process withdrawal, your balance is: $" + balance + "\nTransaction cancelled.");
 			return false;
 		} 
 		
 		balance = balance - amt;
-		System.out.println("Successful withdrawal of $"+ amt + " from account number: " + accountNumber);
+		System.out.println("Successful withdrawal of $"+ amt + " from account number: " + accountNumber + ".\nTransaction completed.");
 		return true;
 	}
 	
@@ -54,7 +54,7 @@ public class Account {
 		}
 		balance = balance + amt;
 		
-		System.out.println("Successful deposit $"+ amt + " to account number: " + accountNumber);
+		System.out.println("Successful deposit $"+ amt + " to account number: " + accountNumber + ".\nTransaction completed.");
 		
 	}
 

@@ -76,7 +76,7 @@ public class ATM {
 				return true;
 			}
 			catch(NumberFormatException e){
-				System.out.println("Invalid account number. \nCannot format the input string '"+ input +"' to a int.");
+				System.out.println("Invalid account number. \nCannot format the input account number '"+ input +"' to a int. Transaction cancelled.");
 				//e.printStackTrace();
 				reset();
 				
@@ -96,6 +96,7 @@ public class ATM {
 				return true;
 			}
 			catch(Exception e){
+				System.out.println("Invalid Pin Number. \nCannot format input PIN '" + input +  "' to a int. Transaction cancelled.");
 				e.getStackTrace();
 				reset();
 			}
@@ -111,6 +112,9 @@ public class ATM {
 				return false;
 			}
 			
+			System.out.println("Invalid operation");
+			return false;
+			
 		}else if(receivedOp == true && receivedAcc == true && receivedPin == true){
 			try{
 				double amt = Double.parseDouble(input);
@@ -125,11 +129,9 @@ public class ATM {
 			}
 			catch(NumberFormatException e){
 				//e.printStackTrace();
-				System.out.println("Error formatting double value.");
-				reset();
+				System.out.println("Error formatting amount '" + input + "' to a double value.");
 				return false;
 			}			
-			
 			
 		}
 		reset();
