@@ -1,0 +1,18 @@
+Enter PIN
+Choose Transaction
+Amount?
+00:03:01 W $60.0
+Choose Transaction
+00:03:45 W $60.0
+Choose Transaction
+EJECT CARD
+Enter PIN
+Enter PIN
+Enter PIN
+Choose Transaction
+Amount?
+07:39:20 W $0.0
+Choose Transaction
+07:40:00 W $0.0
+Choose Transaction
+EJECT CARD
