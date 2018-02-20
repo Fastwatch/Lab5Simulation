@@ -1,5 +1,7 @@
 package ATM;
 
+import SIM.Simulator;
+
 
 public class ATM {
 	
@@ -8,6 +10,7 @@ public class ATM {
 	private boolean receivedOp = false;
 	private Bank bank;
 	Transaction transaction;
+	private Simulator sim;
 	
 	private class Transaction{
 		private String op;
@@ -52,91 +55,89 @@ public class ATM {
 		transaction = null;
 	}
 	
-	/**
-	 * This will call the corresponding actions to be executed, with each input being
-	 * determined by the states that it is currently in. These states are:(Actor entering account number, actor entering pin number
-	 * ,or actor entering the operation to be performed on the account)   
-	 * 
-	 * @param input determines what action will be executed, either it is the 
-	 * account number, pin number, or the operation(withdrawal/deposit)
-	 */
-	public boolean execute(String input){
+	public void execute(String str){
+		String[] args = str.split(" ");
+		
+		switch(args[1].toUpperCase()){
+			case "CARDREAD":
+				cardRead(args[0], Integer.parseInt(args[2]));
+				break;
+			case "BUTTON":
+				button(args[0], args[2]);
+				break;
+			case "NUM":
+				num(args[0], Integer.parseInt(args[2]));
+				break;
+			default:
+				sim.execute("DISP Invalid Command");
+		}
+				
+	}
 	
+	public void cardRead(String time, int accNum){
 		if(receivedAcc == false){
-			try{
-				if(input.equals("exit")) return false;
-				int an = Integer.parseInt(input);
-				if(bank.validate(an) == null){
-					System.out.println("Invalid account number.");
-					reset();
-					return false;
-				}
-				transaction = new Transaction(bank.validate(an));
+			transaction = new Transaction(bank.validate(accNum));
+			if(transaction.acnt != null){
 				receivedAcc = true;
-				return true;
+			}else{
+				System.out.println("Invalid Card Number");
 			}
-			catch(NumberFormatException e){
-				System.out.println("Invalid account number. \nCannot format the input account number '"+ input +"' to a int. Transaction cancelled.");
-				//e.printStackTrace();
-				reset();
-				
-				return false;
-			}			
+		}else{
+			System.out.println("Unexpected Command");
 		}
-		else if(receivedPin == false){
-			try{
-				int pn = Integer.parseInt(input);
-				
-				if (transaction.getAcnt().validate(pn)==false){
-					reset();
-					System.out.println("Invalid Pin Number");
-					return false;
-				}
+	}
+	
+	public void num(String time, int num){
+		if(receivedPin == false){
+			if(transaction.acnt.validate(num) == false){
+				System.out.println("Invalid pin");
+			}
+			else
 				receivedPin = true;
-				return true;
-			}
-			catch(Exception e){
-				System.out.println("Invalid Pin Number. \nCannot format input PIN '" + input +  "' to a int. Transaction cancelled.");
-				e.getStackTrace();
-				reset();
-			}
-		}else if(receivedOp == false){
-			input = input.toUpperCase();
-			if(input.length()==1){
-				if((input.equals("W")||input.equals("D"))){
-					transaction.setOp(input);
-					receivedOp = true;
-					return true;
-				}
-				System.out.println("Invalid operation");
-				return false;
-			}
-			
-			System.out.println("Invalid operation");
-			return false;
-			
-		}else if(receivedOp == true && receivedAcc == true && receivedPin == true){
-			try{
-				double amt = Double.parseDouble(input);
-				if(transaction.getOp().equals("W")){
-					transaction.getAcnt().withdraw(amt);
-				}
-				else{
-					transaction.getAcnt().deposit(amt);
-				}
-				reset();
-				return true;
-			}
-			catch(NumberFormatException e){
-				//e.printStackTrace();
-				System.out.println("Error formatting amount '" + input + "' to a double value.");
-				return false;
-			}			
-			
 		}
-		reset();
-		return false;
+		else if(receivedOp == true){
+			if(transaction.op.equals("W")){
+				if(transaction.acnt.withdraw(num) == false){
+					System.out.println("Insufficient funds.");
+				}else{
+					print(time + " W $" + num);
+				}
+				receivedOp = false;
+				transaction.op = "";
+			}else{
+				System.out.println("Invalid operation");
+			}
+		}else{
+			System.out.println("Unexpected command.");
+		}
+	}
+	
+	public void button(String time, String name){
+		if(name.equalsIgnoreCase("cancel")){
+			if(receivedAcc == true){
+				System.out.println("CARD EJECTED");
+			}
+			reset();
+		}else if(receivedPin == true && receivedOp == false){
+			if(name.equalsIgnoreCase("w")){
+				receivedOp = true;
+				transaction.op = "W";
+			}else if(name.equalsIgnoreCase("CB")){
+				print(time+" CB "+transaction.acnt.getBalance());
+			}else{
+				System.out.println("Invalid Button");
+			}
+		}else{
+			System.out.println("Unexpected Command");
+		}
+	}
+
+	private void print(String string) {
+		System.out.println(string);
 		
 	}
 	
+	public void setSim(Simulator s){
+		this.sim = s;
+	}
 }

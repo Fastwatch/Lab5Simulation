@@ -29,17 +29,13 @@ public class Account {
 	 */
 	public boolean withdraw(double amt){
 		if(amt < 0) {
-			System.out.println("Cannot withdraw negative money");
 			return false;
 		}
 		if(amt > balance){
-			System.out.println("Unable to process withdrawal, your balance is: $" + balance + "\nTransaction cancelled.");
 			return false;
 		} 
 		
 		balance = balance - amt;
-		System.out.println("Successful withdrawal of $"+ amt + " from account number: " + accountNumber + ".\nTransaction completed.");
-		System.out.println("Account balance: " + balance + "\n");
 		return true;
 	}
 	
@@ -50,14 +46,9 @@ public class Account {
 	 */
 	public void deposit(double amt){
 		if(amt < 0){
-			System.out.println("Cannot deposit negative money");
 			return;
 		}
 		balance = balance + amt;
-		
-		System.out.println("Successful deposit $"+ amt + " to account number: " + accountNumber + ".\nTransaction completed.");
-		System.out.println("Account balance: " + balance + "\n");
-
 	}
 
 	public int getAccountNumber() {
