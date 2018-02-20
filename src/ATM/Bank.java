@@ -3,7 +3,7 @@ package ATM;
 public class Bank {
 	private Account[] accounts;
 	private int numAccounts;
-	//
+	
 	public Bank(){
 		accounts = new Account[10];
 		numAccounts = 2;

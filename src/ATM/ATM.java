@@ -34,7 +34,7 @@ public class ATM {
 	}
 	
 	public ATM() {
-		// init
+		// ini
 	}
 
 	/**

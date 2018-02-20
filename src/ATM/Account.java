@@ -3,7 +3,7 @@ package ATM;
 public class Account {
 	private int accountNumber, pinCode;
 	private double balance;
-//
+
 	public Account(int an, int pn, double balance){
 		this.setAccountNumber(an);
 		this.pinCode = pn;
