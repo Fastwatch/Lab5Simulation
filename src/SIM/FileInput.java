@@ -11,7 +11,11 @@ import ATM.ATM;
 /**
  * @author Riley Mahr rwmahr@gmail.com
  */
-public class FileInput {
+public class FileInput extends AbstractInput {
+	
+	public ATM atm;
+	public Scanner in;
+	
 	
 	/**
 	 * Base class to read in input from a file
