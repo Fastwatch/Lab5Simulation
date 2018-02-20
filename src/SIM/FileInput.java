@@ -11,7 +11,7 @@ import ATM.ATM;
 /**
  * @author Riley Mahr rwmahr@gmail.com
  */
-public class FileInput extends AbstractInput {
+public class FileInput {
 	
 	public ATM atm;
 	public Scanner in;
@@ -49,23 +49,11 @@ public class FileInput extends AbstractInput {
 				
 				while ((line = br.readLine()) != null) {
 					//do something with line
-					System.out.println(line);
-					
-					processLine(line, arr);
-					
+					atm.execute(line);					
 				}
 			} catch (IOException ex) {
 				System.out.println("error occured in retrieving file");
 			}				
-		
-		
-	}
-	
-	private void processLine(String input, String[] arr) {
-		String[] tmp = input.split(" ");
-		System.out.println("Time: " + tmp[0] + " Command: " + tmp[1] + " Val: " + tmp[2]);
-		
-		//validate time and command values??
 		
 		
 	}
