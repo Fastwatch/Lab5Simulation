@@ -26,32 +26,47 @@ public class FileInput extends AbstractInput {
 		File file = null;
 		
 		
-		//boolean valid = false;
-		//do {
+		boolean valid = false;
 			System.out.print("\nPlease enter a file path:");
 			fileName = in.nextLine();
-			/*
+			
 			file = new File(fileName);
-			if(file.exists()) {
-				valid = true;
-			} else {
+			
+			
+			
+			if(!file.exists() || !file.isFile()) {
 				System.out.println("File does not exist");
+				return;
 			}
-			*/
 			
-		//}while(!valid);
+			
+			
+			
+			try (BufferedReader br = new BufferedReader(new FileReader(fileName));){
 				
-		try (BufferedReader br = new BufferedReader(new FileReader(fileName));){
-			
-			String line;
-			
-			while ((line = br.readLine()) != null) {
-				//do something with line
-				System.out.println(line);
-			}
-		} catch (IOException ex) {
-			System.out.println("error occured in retrieving file");
-		}
+				String line;
+				String[] arr = new String[3];
+				
+				while ((line = br.readLine()) != null) {
+					//do something with line
+					System.out.println(line);
+					
+					processLine(line, arr);
+					
+				}
+			} catch (IOException ex) {
+				System.out.println("error occured in retrieving file");
+			}				
+		
+		
+	}
+	
+	private void processLine(String input, String[] arr) {
+		String[] tmp = input.split(" ");
+		System.out.println("Time: " + tmp[0] + " Command: " + tmp[1] + " Val: " + tmp[2]);
+		
+		//validate time and command values??
+		
 		
 	}
 	

@@ -24,11 +24,7 @@ public class AbstractInput {
 				break;
 			case "PRINT":
 				break;
-			case "BUTTON W":
-				break;
-			case "BUTTON CB":
-				break;
-			case"BUTTON CANCEL":
+			case "BUTTON":
 				break;
 			default:
 				System.out.println("Command could not be understood");
