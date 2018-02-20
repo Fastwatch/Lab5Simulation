@@ -32,7 +32,7 @@ public class ConsoleInput {
 	}
 	
 	private static String getTime() {
-		//Time Formated as HH:MM:SS
+		//Time Formated as HH:hh:ss
 		//That is, Hour, Min, Sec 
 		String timeStamp = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
 		return timeStamp;
