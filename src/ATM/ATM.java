@@ -4,7 +4,7 @@ import SIM.Simulator;
 
 
 public class ATM {
-	
+	//
 	private boolean receivedAcc = false;
 	private boolean receivedPin = false;
 	private boolean receivedOp = false;
