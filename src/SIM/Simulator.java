@@ -1,10 +1,11 @@
 package SIM;
+
 import ATM.ATM;
+import SIM.FileInput;
 import java.util.Scanner;
 
 public class Simulator {
 	private static ATM atm;
-	
 	
 	public static void main(String args[]) {
 		String input;
@@ -12,6 +13,33 @@ public class Simulator {
 		atm = new ATM();
 		atm.start();
 		System.out.println("Welcome to the atm simulator..");
+		
+		boolean exit = false;
+		
+		do {
+			System.out.print("Enter \"F\" for file input, \"C\" for console input or \"E\" for exit: ");
+			input = in.nextLine();
+			
+			switch(input.toUpperCase()) {
+				case "F":
+					FileInput fn = new FileInput();
+					fn.readFile(in, atm);
+					break;
+				case "C":
+					// Console Input
+					break;
+				case "E":
+					exit = true;
+					break;
+				default:
+					System.out.println("Invalid Input, please enter a valid character");
+			}
+		
+		} while (!exit);
+		
+		
+		
+		/*
 		do{
 			System.out.print("\nPlease enter an account number or \"exit\" to quit: ");
 			input = in.nextLine();
@@ -64,7 +92,10 @@ public class Simulator {
 		
 		System.out.print("\nGoodbye..");
 		
-		in.close();
 		
+		*/
+		
+		System.out.println("Goodbye...");
+		in.close();
 	}
 }
