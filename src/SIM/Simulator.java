@@ -47,10 +47,10 @@ public class Simulator {
 		String text = input.substring(input.indexOf(" "));
 		switch(cmd.toUpperCase()) {
 		case "DIS":
-			System.out.println(text);
+			System.out.println("ON DISPLAY: " + text);
 			break;
 		case "PRINT":
-			System.out.println(text);
+			System.out.println("ON PRINTER: " + text);
 			break;
 		default:
 			System.out.println("Print command could not be understood");

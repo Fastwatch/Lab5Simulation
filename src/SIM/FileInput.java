@@ -26,7 +26,6 @@ public class FileInput {
 		File file = null;
 		
 		
-		boolean valid = false;
 			System.out.print("\nPlease enter a file path:");
 			fileName = in.nextLine();
 			
@@ -39,16 +38,12 @@ public class FileInput {
 				return;
 			}
 			
-			
-			
-			
 			try (BufferedReader br = new BufferedReader(new FileReader(fileName));){
 				
 				String line;
-				String[] arr = new String[3];
 				
 				while ((line = br.readLine()) != null) {
-					//do something with line
+					System.out.println(line);
 					atm.execute(line);					
 				}
 			} catch (IOException ex) {

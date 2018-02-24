@@ -79,6 +79,7 @@ public class ATM {
 			transaction = new Transaction(bank.validate(accNum));
 			if(transaction.acnt != null){
 				receivedAcc = true;
+				System.out.println("Enter Pin");
 			}else{
 				System.out.println("Invalid Card Number");
 			}
@@ -92,8 +93,10 @@ public class ATM {
 			if(transaction.acnt.validate(num) == false){
 				System.out.println("Invalid pin");
 			}
-			else
+			else {
 				receivedPin = true;
+				System.out.println("Choose Transaction");
+			}
 		}
 		else if(receivedOp == true){
 			if(transaction.op.equals("W")){
@@ -115,13 +118,14 @@ public class ATM {
 	public void button(String time, String name){
 		if(name.equalsIgnoreCase("cancel")){
 			if(receivedAcc == true){
-				System.out.println("CARD EJECTED");
+				System.out.println("EJECT CARD");
 			}
 			reset();
 		}else if(receivedPin == true && receivedOp == false){
 			if(name.equalsIgnoreCase("w")){
 				receivedOp = true;
 				transaction.op = "W";
+				System.out.println("Amount?");
 			}else if(name.equalsIgnoreCase("CB")){
 				print(time+" CB "+transaction.acnt.getBalance());
 			}else{
