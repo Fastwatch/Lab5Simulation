@@ -13,22 +13,34 @@ import ATM.ATM;
 /**
  * @author Andrew Krill atkrill@uwm.edu
  */
-
 public class ConsoleInput {
+	
+	public ATM atm;
 
-	public static void main(String args[]) {
+	/**
+	 * Base class to read in console commands
+	 */
+	
+	public boolean readConsole(ATM atm) {
 		boolean isRunning = true;
 		Scanner scanner = new Scanner(System.in);
-		String input;
+		String rawInput;
+		String input;	
+		
+		System.out.println("Welcome to the Console Input! Enter your command, or type \"exit\" to exit the console mode!");
 		
 		while (isRunning) {
-			input = scanner.next();
+			rawInput = scanner.nextLine();
+			if(rawInput.equals("exit")) {
+				isRunning = false;
+				break;
+			}
 			String timeStamp = getTime();
-			System.out.println(input);
-			System.out.println(timeStamp);
 
+			input = timeStamp.concat(" " + rawInput);
+			atm.execute(input);
 		}
-				
+		return isRunning;
 	}
 	
 	private static String getTime() {

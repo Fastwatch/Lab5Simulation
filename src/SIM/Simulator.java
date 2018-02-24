@@ -27,7 +27,8 @@ public class Simulator {
 					fn.readFile(in, atm);
 					break;
 				case "C":
-					// Console Input
+					ConsoleInput cn = new ConsoleInput();
+					cn.readConsole(atm);
 					break;
 				case "E":
 					exit = true;
