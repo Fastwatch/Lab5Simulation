@@ -31,14 +31,15 @@ public class ConsoleInput {
 		
 		while (isRunning) {
 			rawInput = scanner.nextLine();
-			if(rawInput.equals("exit")) {
-				isRunning = false;
-				break;
-			}
+			
 			String timeStamp = getTime();
 
 			input = timeStamp.concat(" " + rawInput);
 			atm.execute(input);
+			if(rawInput.equals("exit")) {
+				isRunning = false;
+				break;
+			}
 		}
 		return isRunning;
 	}

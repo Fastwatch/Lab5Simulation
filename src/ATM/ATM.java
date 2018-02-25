@@ -58,6 +58,10 @@ public class ATM {
 	
 	public boolean execute(String str){
 		String[] args = str.split("\\s+");
+		if(args.length >= 2 && args[1].equalsIgnoreCase("exit")) {
+			reset(); 
+			return true;
+		}
 		if(args.length <= 2 || args.length >= 4) {
 			sim.execute("DIS Unexpected Command");
 			return false;
@@ -66,7 +70,7 @@ public class ATM {
 			case "CARDREAD":
 				try{
 					if(receivedAcc == true) {
-						sim.execute("DIS Cancelling previous transaction.\nStarting a new transaction for " + args[2]);
+						sim.execute("DIS Cancelling previous transaction. Starting a new transaction for " + args[2]);
 						reset();
 					}
 					return cardRead(args[0], Integer.parseInt(args[2]));
@@ -75,9 +79,17 @@ public class ATM {
 					return false;
 				}
 			case "BUTTON":
+				if(receivedAcc == false) {
+					sim.execute("DIS Unexpected Command.");
+					return false;
+				}
 				return button(args[0], args[2]);
 				
 			case "NUM":
+				if(receivedAcc == false) {
+					sim.execute("DIS Unexpected Command.");
+					return false;
+				}
 				try {
 					return num(args[0], Integer.parseInt(args[2]));
 				}catch(NumberFormatException e){
