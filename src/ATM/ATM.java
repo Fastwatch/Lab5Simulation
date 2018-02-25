@@ -35,6 +35,7 @@ public class ATM {
 	
 	public ATM() {
 		// ini
+		sim = new Simulator();
 	}
 
 	/**
@@ -55,90 +56,116 @@ public class ATM {
 		transaction = null;
 	}
 	
-	public void execute(String str){
-		String[] args = str.split(" ");
+	public boolean execute(String str){
+		String[] args = str.split("\\s+");
 		
 		switch(args[1].toUpperCase()){
 			case "CARDREAD":
-				cardRead(args[0], Integer.parseInt(args[2]));
-				break;
+				try{
+					return cardRead(args[0], Integer.parseInt(args[2]));
+				}catch(NumberFormatException e){
+					System.out.println("String cannot be formatted to a number.");
+					return false;
+				}
 			case "BUTTON":
-				button(args[0], args[2]);
-				break;
+				return button(args[0], args[2]);
+				
 			case "NUM":
-				num(args[0], Integer.parseInt(args[2]));
-				break;
+				return num(args[0], Integer.parseInt(args[2]));
+				
 			default:
-				sim.execute("DISP Invalid Command");
+				sim.execute("DIS Invalid Command");
+				return false;
 		}
 				
 	}
 	
-	public void cardRead(String time, int accNum){
+	public boolean cardRead(String time, int accNum){
 		if(receivedAcc == false){
 			transaction = new Transaction(bank.validate(accNum));
 			if(transaction.acnt != null){
 				receivedAcc = true;
-				System.out.println("Enter Pin");
+				sendToSim("DIS Enter Pin");
+				return true;
 			}else{
-				System.out.println("Invalid Card Number");
+				sendToSim("DIS Invalid Card Number");
+				return false;
 			}
 		}else{
-			System.out.println("Unexpected Command");
+			sendToSim("DIS Unexpected Command");
+			return false;
 		}
 	}
 	
-	public void num(String time, int num){
+	public boolean num(String time, int num){
 		if(receivedPin == false){
 			if(transaction.acnt.validate(num) == false){
-				System.out.println("Invalid pin");
+				sendToSim("DIS Invalid pin");
+				return false;
 			}
 			else {
 				receivedPin = true;
-				System.out.println("Choose Transaction");
+				sendToSim("DIS Choose Transaction");
+				return true;
 			}
 		}
 		else if(receivedOp == true){
 			if(transaction.op.equals("W")){
 				if(transaction.acnt.withdraw(num) == false){
-					System.out.println("Insufficient funds.");
+					sendToSim("DIS Insufficient funds.");
+					return false;
 				}else{
-					print(time + " W $" + num);
+					sendToSim("DIS " + time + " W $" + num);
+					sendToSim("DIS Choose Transaction");
 				}
 				receivedOp = false;
 				transaction.op = "";
+				return true;
 			}else{
-				System.out.println("Invalid operation");
+				sendToSim("DIS Invalid operation");
+				return false;
 			}
 		}else{
-			System.out.println("Unexpected command.");
+			sendToSim("DIS Unexpected command.");
+			return false;
 		}
 	}
 	
-	public void button(String time, String name){
+	public boolean button(String time, String name){
 		if(name.equalsIgnoreCase("cancel")){
 			if(receivedAcc == true){
-				System.out.println("EJECT CARD");
+				sendToSim("DIS EJECT CARD");
+				reset();
+				return true;
 			}
 			reset();
 		}else if(receivedPin == true && receivedOp == false){
 			if(name.equalsIgnoreCase("w")){
 				receivedOp = true;
 				transaction.op = "W";
-				System.out.println("Amount?");
+				sendToSim("DIS Amount?");
+				return true;
 			}else if(name.equalsIgnoreCase("CB")){
-				print(time+" CB "+transaction.acnt.getBalance());
+				sendToSim("DIS " + time+" CB $"+transaction.acnt.getBalance());
+				sendToSim("DIS Choose Transaction");
+				return true;
 			}else{
-				System.out.println("Invalid Button");
+				sendToSim("DIS Invalid Button");
+				return false;
 			}
+		}else if(name.equalsIgnoreCase("CB")){
+			sendToSim("DIS " + time+" CB $"+transaction.acnt.getBalance());
+			sendToSim("DIS Choose Transaction");
+			return true;
 		}else{
-			System.out.println("Unexpected Command");
+			sendToSim("DIS Unexpected Command.");
+			return false;
 		}
+		return false;
 	}
 
-	private void print(String string) {
-		System.out.println(string);
-		
+	private void sendToSim(String string) {
+		sim.execute(string);
 	}
 	
 	public void setSim(Simulator s){

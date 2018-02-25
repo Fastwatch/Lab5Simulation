@@ -53,26 +53,30 @@ public class ATMTest {
 	public void testAtm() {
 		setUpATM();
 		//act number
-		assertEquals("accepted invalid input", false, atm.execute("1111"));
-		assertEquals("did not accept valid input", true, atm.execute("1234"));
+		assertEquals("accepted invalid input", false, atm.execute("10:15:23 CARDREAD 1111"));
+		assertEquals("did not accept valid input", true, atm.execute("10:15:23 CARDREAD 1234"));
 		//invalid pin
-		assertEquals("accepted invalid input", false, atm.execute("1111"));
+		assertEquals("accepted invalid input", false, atm.execute("10:15:23 NUM 1111"));
 		
 		//valid act number and pin
-		assertEquals("did not accept valid input", true, atm.execute("1234"));
-		assertEquals("did not accept valid input", true, atm.execute("6789"));
+		setUpATM();
+		setUpAccounts();
+		assertEquals("did not accept valid input", true, atm.execute("10:15:23 CARDREAD 1234"));
+		assertEquals("did not accept valid input", true, atm.execute("10:15:23 NUM 6789"));
 		
 		// invalid input
-		assertEquals("accepted invalid input", false, atm.execute("F"));
+		assertEquals("accepted invalid input", false, atm.execute("10:15:23 BUTTON F"));
 		// valid input
-		assertEquals("did not accept valid input", true, atm.execute("W"));
-		assertEquals("accepted amount", true, atm.execute("20"));
+		assertEquals("did not accept valid input", true, atm.execute("10:15:23 BUTTON W"));
+		assertEquals("accepted amount", true, atm.execute("10:15:23 NUM 20"));
 		
 		//valid act number and pin
-		assertEquals("did not accept valid input", true, atm.execute("1234"));
-		assertEquals("did not accept valid input", true, atm.execute("6789"));
-		assertEquals("did not accept valid input", true, atm.execute("W"));
-		assertEquals("did not accept valid input", true, atm.execute("20"));
+		setUpATM();
+		setUpAccounts();
+		assertEquals("did not accept valid input", true, atm.execute("10:15:23 CARDREAD 1234"));
+		assertEquals("did not accept valid input", true, atm.execute("10:15:23 NUM 6789"));
+		assertEquals("did not accept valid input", true, atm.execute("10:15:23 BUTTON W"));
+		assertEquals("did not accept valid input", true, atm.execute("10:15:23 NUM 20"));
 		
 		
 		

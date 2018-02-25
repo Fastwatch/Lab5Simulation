@@ -27,7 +27,8 @@ public class Simulator {
 					fn.readFile(in, atm);
 					break;
 				case "C":
-					// Console Input					
+					ConsoleInput cn = new ConsoleInput();
+					cn.readConsole(atm);
 					break;
 				case "E":
 					exit = true;
@@ -54,6 +55,6 @@ public class Simulator {
 			break;
 		default:
 			System.out.println("Print command could not be understood");
-	}
+		}
 	}
 }
