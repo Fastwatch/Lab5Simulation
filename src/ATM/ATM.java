@@ -58,20 +58,32 @@ public class ATM {
 	
 	public boolean execute(String str){
 		String[] args = str.split("\\s+");
-		
+		if(args.length <= 2 || args.length >= 4) {
+			sim.execute("DIS Unexpected Command");
+			return false;
+		}
 		switch(args[1].toUpperCase()){
 			case "CARDREAD":
 				try{
+					if(receivedAcc == true) {
+						sim.execute("DIS Cancelling previous transaction.\nStarting a new transaction for " + args[2]);
+						reset();
+					}
 					return cardRead(args[0], Integer.parseInt(args[2]));
 				}catch(NumberFormatException e){
-					System.out.println("String cannot be formatted to a number.");
+					sim.execute("DIS Invalid card read, please re-enter the number correctly.");
 					return false;
 				}
 			case "BUTTON":
 				return button(args[0], args[2]);
 				
 			case "NUM":
-				return num(args[0], Integer.parseInt(args[2]));
+				try {
+					return num(args[0], Integer.parseInt(args[2]));
+				}catch(NumberFormatException e){
+					sim.execute("DIS Invalid entry, please re-enter the number correctly.");
+					return false;
+				}
 				
 			default:
 				sim.execute("DIS Invalid Command");
@@ -85,14 +97,14 @@ public class ATM {
 			transaction = new Transaction(bank.validate(accNum));
 			if(transaction.acnt != null){
 				receivedAcc = true;
-				sendToSim("DIS Enter Pin");
+				sim.execute("DIS Enter Pin");
 				return true;
 			}else{
-				sendToSim("DIS Invalid Card Number");
+				sim.execute("DIS Invalid Card Number");
 				return false;
 			}
 		}else{
-			sendToSim("DIS Unexpected Command");
+			sim.execute("DIS Unexpected Command");
 			return false;
 		}
 	}
@@ -100,33 +112,33 @@ public class ATM {
 	public boolean num(String time, int num){
 		if(receivedPin == false){
 			if(transaction.acnt.validate(num) == false){
-				sendToSim("DIS Invalid pin");
+				sim.execute("DIS Invalid pin");
 				return false;
 			}
 			else {
 				receivedPin = true;
-				sendToSim("DIS Choose Transaction");
+				sim.execute("DIS Choose Transaction");
 				return true;
 			}
 		}
 		else if(receivedOp == true){
 			if(transaction.op.equals("W")){
 				if(transaction.acnt.withdraw(num) == false){
-					sendToSim("DIS Insufficient funds.");
+					sim.execute("DIS Insufficient funds.");
 					return false;
 				}else{
-					sendToSim("DIS " + time + " W $" + num);
-					sendToSim("DIS Choose Transaction");
+					sim.execute("DIS " + time + " W $" + num);
+					sim.execute("DIS Choose Transaction");
 				}
 				receivedOp = false;
 				transaction.op = "";
 				return true;
 			}else{
-				sendToSim("DIS Invalid operation");
+				sim.execute("DIS Invalid operation");
 				return false;
 			}
 		}else{
-			sendToSim("DIS Unexpected command.");
+			sim.execute("DIS Unexpected command.");
 			return false;
 		}
 	}
@@ -134,7 +146,7 @@ public class ATM {
 	public boolean button(String time, String name){
 		if(name.equalsIgnoreCase("cancel")){
 			if(receivedAcc == true){
-				sendToSim("DIS EJECT CARD");
+				sim.execute("DIS EJECT CARD");
 				reset();
 				return true;
 			}
@@ -143,30 +155,27 @@ public class ATM {
 			if(name.equalsIgnoreCase("w")){
 				receivedOp = true;
 				transaction.op = "W";
-				sendToSim("DIS Amount?");
+				sim.execute("DIS Amount?");
 				return true;
 			}else if(name.equalsIgnoreCase("CB")){
-				sendToSim("DIS " + time+" CB $"+transaction.acnt.getBalance());
-				sendToSim("DIS Choose Transaction");
+				sim.execute("DIS " + time+" CB $"+transaction.acnt.getBalance());
+				sim.execute("DIS Choose Transaction");
 				return true;
 			}else{
-				sendToSim("DIS Invalid Button");
+				sim.execute("DIS Invalid Button");
 				return false;
 			}
 		}else if(name.equalsIgnoreCase("CB")){
-			sendToSim("DIS " + time+" CB $"+transaction.acnt.getBalance());
-			sendToSim("DIS Choose Transaction");
+			sim.execute("DIS " + time+" CB $"+transaction.acnt.getBalance());
+			sim.execute("DIS Choose Transaction");
 			return true;
 		}else{
-			sendToSim("DIS Unexpected Command.");
+			sim.execute("DIS Unexpected Command.");
 			return false;
 		}
 		return false;
 	}
 
-	private void sendToSim(String string) {
-		sim.execute(string);
-	}
 	
 	public void setSim(Simulator s){
 		this.sim = s;
