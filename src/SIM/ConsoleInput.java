@@ -21,16 +21,15 @@ public class ConsoleInput {
 	 * Base class to read in console commands
 	 */
 	
-	public boolean readConsole(ATM atm) {
+	public boolean readConsole(Scanner in, ATM atm) {
 		boolean isRunning = true;
-		Scanner scanner = new Scanner(System.in);
 		String rawInput;
 		String input;	
 		
 		System.out.println("Welcome to the Console Input! Enter your command, or type \"exit\" to exit the console mode!");
 		
 		while (isRunning) {
-			rawInput = scanner.nextLine();
+			rawInput = in.nextLine();
 			if(rawInput.equals("exit")) {
 				isRunning = false;
 				break;

@@ -28,7 +28,7 @@ public class Simulator {
 					break;
 				case "C":
 					ConsoleInput cn = new ConsoleInput();
-					cn.readConsole(atm);
+					cn.readConsole(in, atm);
 					break;
 				case "E":
 					exit = true;
@@ -48,10 +48,10 @@ public class Simulator {
 		String text = input.substring(input.indexOf(" "));
 		switch(cmd.toUpperCase()) {
 		case "DIS":
-			System.out.println("ON DISPLAY: " + text);
+			System.out.println("DISP: " + text);
 			break;
 		case "PRINT":
-			System.out.println("ON PRINTER: " + text);
+			System.out.println("PRINT: " + text);
 			break;
 		default:
 			System.out.println("Print command could not be understood");
