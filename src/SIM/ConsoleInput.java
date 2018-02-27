@@ -38,6 +38,10 @@ public class ConsoleInput {
 
 			input = timeStamp.concat(" " + rawInput);
 			atm.execute(input);
+			if(rawInput.equals("exit")) {
+				isRunning = false;
+				break;
+			}
 		}
 		return isRunning;
 	}
